@@ -54,7 +54,7 @@ export const unwrapSpansIntoText = (allWords: HTMLSpanElement[]): void => {
     allWords.forEach((span) => {
         const next = span.nextSibling;
         if (next && next.textContent === ' ') {
-            next.remove();
+            next.replaceWith(document.createTextNode(' '));
         }
         span.replaceWith(document.createTextNode(span.textContent!));
     });
