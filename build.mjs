@@ -1,13 +1,13 @@
 import { build } from 'bun'
 
 const result = await build({
-  entrypoints: ['highlight-tts.ts'],
+  entrypoints: ['src/index.ts'],
   outdir: 'dist',
   target: 'browser',
   format: 'iife',
   sourcemap: 'none',
   minify: false,
-  naming: '[name].bundle.js',
+  naming: 'highlight-tts.bundle.js',
 })
 
 if (!result.success) {
