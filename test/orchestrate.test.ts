@@ -70,6 +70,8 @@ describe('orchestrate', () => {
     expect(getCurrentContainer()).toBe(second);
     // first container's spans were unwrapped back to text
     expect(first.querySelectorAll('span').length).toBe(0);
+    // previous container keeps its spacing when switching
+    expect(first.textContent).toBe('first text');
   });
 
   test('highlightAndSpeak cancels on beforeunload', () => {

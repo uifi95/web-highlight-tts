@@ -117,15 +117,19 @@ describe('highlight', () => {
       (n) => n.nodeType === Node.ELEMENT_NODE,
     );
     expect(hasElements).toBe(false);
-    expect(parent.textContent).toBe('helloworld');
+    expect(parent.textContent).toBe('hello world');
   });
 
-  test('unwrapSpansIntoText removes trailing space siblings', () => {
+  test('unwrapSpansIntoText preserves spacing between words', () => {
     const { document } = env.window;
     const parent = document.createElement('p');
     parent.appendChild(document.createTextNode('a b c'));
     const spans = wrapTextNodeIntoSpans(parent.firstChild!);
     unwrapSpansIntoText(spans);
-    expect(parent.textContent).toBe('abc');
+    expect(parent.textContent).toBe('a b c');
+    const hasElements = Array.from(parent.childNodes).some(
+      (n) => n.nodeType === Node.ELEMENT_NODE,
+    );
+    expect(hasElements).toBe(false);
   });
 });
