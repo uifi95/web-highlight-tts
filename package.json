@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "build": "bun run build.mjs",
-    "typecheck": "bunx tsc --noEmit"
+    "typecheck": "bunx tsc --noEmit",
+    "test": "bun test",
+    "coverage": "bun test --coverage"
   },
   "devDependencies": {
+    "happy-dom": "^20.11.6",
     "typescript": "^5.5.0"
   }
 }

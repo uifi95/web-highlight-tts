@@ -52,6 +52,19 @@ Useful commands:
 - `bun run build` — build the browser bundle into `dist/`.
 - `bun run typecheck` — run the TypeScript type checker without emitting.
 
+## Testing
+
+The project uses the [Bun test runner](https://bun.sh/docs/cli/test) with
+[happy-dom](https://github.com/capricorn86/happy-dom) for a DOM environment.
+The shared harness in [`test/setup.ts`](./test/setup.ts) registers browser
+globals, mocks the Web Speech API, and forces layout properties so visibility
+checks behave like a real browser.
+
+- `bun run test` — run the unit test suite (`bun test`).
+- `bun run coverage` — run the tests with coverage reporting.
+
+Coverage currently exceeds 90% across all `src/` modules.
+
 ## Usage
 
 | Action | How |
