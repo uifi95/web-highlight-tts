@@ -27,7 +27,8 @@ describe('content', () => {
   });
 
   const el = (tag: string): Element => env.window.document.createElement(tag);
-  const htm = (tag: string): HTMLElement => env.window.document.createElement(tag);
+  const htm = (tag: string): HTMLElement =>
+    env.window.document.createElement(tag);
 
   test('isNoise matches noise selectors only for elements', () => {
     const nav = el('nav');
@@ -92,7 +93,10 @@ describe('content', () => {
 
   test('scoreElement combines text, paragraphs and link penalties', () => {
     const div = htm('div');
-    div.innerHTML = '<p>' + 'word '.repeat(40) + '</p><p>second paragraph</p><a href="#">x</a>';
+    div.innerHTML =
+      '<p>' +
+      'word '.repeat(40) +
+      '</p><p>second paragraph</p><a href="#">x</a>';
     const candidate = scoreElement(div);
     expect(candidate.element).toBe(div);
     expect(candidate.score).toBeGreaterThan(0);
@@ -194,8 +198,12 @@ describe('content', () => {
   test('findContentContainer with default selector picks top candidate or body', () => {
     const { document } = env.window;
     document.body.innerHTML =
-      '<article id="a"><p>' + 'a'.repeat(200) + '</p></article>' +
-      '<div id="b"><p>' + 'b'.repeat(150) + '</p></div>';
+      '<article id="a"><p>' +
+      'a'.repeat(200) +
+      '</p></article>' +
+      '<div id="b"><p>' +
+      'b'.repeat(150) +
+      '</p></div>';
     const found = findContentContainer(DEFAULT_SELECTOR);
     expect(new Set(['a', 'b'])).toContain((found as HTMLElement).id);
   });

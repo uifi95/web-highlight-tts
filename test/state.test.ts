@@ -32,9 +32,11 @@ describe('state', () => {
   });
 
   const makeUtterance = (): SpeechSynthesisUtterance =>
-    new (globalThis.SpeechSynthesisUtterance as unknown as new (
-      t?: string,
-    ) => SpeechSynthesisUtterance)('hello');
+    new (
+      globalThis.SpeechSynthesisUtterance as unknown as new (
+        t?: string,
+      ) => SpeechSynthesisUtterance
+    )('hello');
 
   test('active word index defaults to 0 and can be set', () => {
     expect(getActiveWordIndex()).toBe(0);
