@@ -15,28 +15,35 @@ describe('controls', () => {
     env.cleanup();
   });
 
-  const findControls = (): Record<string, HTMLElement> => {
+  const findControls = () => {
     const { document } = env.window;
-    const container = document.querySelector('div[style*="position: fixed"]') as HTMLDivElement;
+    const container = document.querySelector(
+      'div[style*="position: fixed"]',
+    ) as HTMLDivElement;
     const buttons = Array.from(container.querySelectorAll('button'));
     const play = buttons.find((b) => b.innerText === '▶️')!;
     const pause = buttons.find((b) => b.innerText === '⏸️')!;
     const stop = buttons.find((b) => b.innerText === '⏹️')!;
     const search = buttons.find((b) => b.innerText === '🔍')!;
-    const voiceSelector = container.querySelector('select') as HTMLSelectElement;
+    const voiceSelector = container.querySelector(
+      'select',
+    ) as HTMLSelectElement;
     return { play, pause, stop, search, voiceSelector, container };
   };
 
   test('injectControls appends toolbar with buttons and voice options', () => {
     injectControls();
-    const { play, pause, stop, search, voiceSelector, container } = findControls();
+    const { play, pause, stop, search, voiceSelector, container } =
+      findControls();
     expect(container).toBeTruthy();
     expect(play && pause && stop && search).toBeTruthy();
     // mock exposes one en-US voice -> one option
     expect(voiceSelector.options.length).toBe(1);
     expect(voiceSelector.options[0]!.textContent).toContain('Samantha');
     expect(voiceSelector.options[0]!.getAttribute('data-lang')).toBe('en-US');
-    expect(voiceSelector.options[0]!.getAttribute('data-name')).toBe('Samantha');
+    expect(voiceSelector.options[0]!.getAttribute('data-name')).toBe(
+      'Samantha',
+    );
   });
 
   test('play button resumes when speech is paused', () => {
@@ -64,10 +71,9 @@ describe('controls', () => {
 
   test('voice selection applies the voice to the current utterance and speaks', () => {
     injectControls();
-    const utterance =
-      new (globalThis.SpeechSynthesisUtterance as new (t?: string) => unknown)(
-        'text',
-      );
+    const utterance = new (
+      globalThis.SpeechSynthesisUtterance as new (t?: string) => unknown
+    )('text');
     setCurrentUtterance(utterance as SpeechSynthesisUtterance);
     const { voiceSelector } = findControls();
     voiceSelector.value = 'Samantha | (en-US)';

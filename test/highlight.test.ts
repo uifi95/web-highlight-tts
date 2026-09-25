@@ -19,7 +19,9 @@ describe('highlight', () => {
     env = setupTestEnv();
     rafCallbacks = [];
     origRaf = globalThis.requestAnimationFrame;
-    (globalThis as Record<string, unknown>).requestAnimationFrame = (cb: () => void) => {
+    (globalThis as Record<string, unknown>).requestAnimationFrame = (
+      cb: () => void,
+    ) => {
       rafCallbacks.push(cb);
       return rafCallbacks.length;
     };
@@ -74,7 +76,11 @@ describe('highlight', () => {
     const parent = document.createElement('p');
     parent.appendChild(document.createTextNode('hello brave world'));
     const spans = wrapTextNodeIntoSpans(parent.firstChild!);
-    expect(spans.map((s) => s.textContent)).toEqual(['hello', 'brave', 'world']);
+    expect(spans.map((s) => s.textContent)).toEqual([
+      'hello',
+      'brave',
+      'world',
+    ]);
     // children should be span span(space) span span(space) span
     const children = Array.from(parent.children).map((c) => ({
       text: c.textContent,

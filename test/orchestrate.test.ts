@@ -29,7 +29,9 @@ describe('orchestrate', () => {
     if (words.length) {
       words.forEach((span) => {
         if (span.parentNode) {
-          span.replaceWith(env.window.document.createTextNode(span.textContent!));
+          span.replaceWith(
+            env.window.document.createTextNode(span.textContent!),
+          );
         }
       });
     }
@@ -45,7 +47,7 @@ describe('orchestrate', () => {
 
     const utterance = highlightAndSpeak(container);
 
-    expect(utterance).toBe(getCurrentUtterance());
+    expect(getCurrentUtterance()).toBe(utterance);
     expect(getCurrentContainer()).toBe(container);
     // words are wrapped into spans inside the container
     expect(container.querySelectorAll('span').length).toBeGreaterThan(0);
@@ -92,7 +94,8 @@ describe('orchestrate', () => {
     target.textContent = 'target article words';
     document.body.appendChild(target);
     const origElementFromPoint = document.elementFromPoint.bind(document);
-    document.elementFromPoint = (x: number, y: number): Element | null => target;
+    document.elementFromPoint = (x: number, y: number): Element | null =>
+      target;
 
     const before = env.speech.cancelCalls;
     searchAndSpeak();
