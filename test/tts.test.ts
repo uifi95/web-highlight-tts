@@ -1,5 +1,9 @@
 import { describe, test, expect, beforeEach, afterEach, spyOn } from 'bun:test';
-import { setupTestEnv, type TestEnv, MockSpeechSynthesisUtterance } from './setup';
+import {
+  setupTestEnv,
+  type TestEnv,
+  MockSpeechSynthesisUtterance,
+} from './setup';
 import {
   configureUtterance,
   applyVoice,
@@ -68,7 +72,10 @@ describe('tts', () => {
 
   test('configureUtterance highlights the word matching a boundary char index', () => {
     const allWords = makeSpans(['hello', 'world']);
-    const utterance = configureUtterance({ allWords, rate: 1 }) as MockUtterance;
+    const utterance = configureUtterance({
+      allWords,
+      rate: 1,
+    }) as unknown as MockUtterance;
     // 'hello world' -> 'world' starts at char index 6
     utterance.emit('boundary', { name: 'word', charIndex: 6 });
     expect(allWords[1]!.style.backgroundColor).toBe('yellow');
@@ -79,14 +86,20 @@ describe('tts', () => {
 
   test('configureUtterance ignores non-word boundaries', () => {
     const allWords = makeSpans(['hello', 'world']);
-    const utterance = configureUtterance({ allWords, rate: 1 }) as MockUtterance;
+    const utterance = configureUtterance({
+      allWords,
+      rate: 1,
+    }) as unknown as MockUtterance;
     utterance.emit('boundary', { name: 'sentence', charIndex: 6 });
     expect(allWords.every((s) => s.style.backgroundColor === '')).toBe(true);
   });
 
   test('configureUtterance resets index and unhighlights all on end', () => {
     const allWords = makeSpans(['hello', 'world']);
-    const utterance = configureUtterance({ allWords, rate: 1 }) as MockUtterance;
+    const utterance = configureUtterance({
+      allWords,
+      rate: 1,
+    }) as unknown as MockUtterance;
     utterance.emit('boundary', { name: 'word', charIndex: 6 });
     expect(allWords[1]!.style.backgroundColor).toBe('yellow');
     utterance.emit('end');
@@ -97,7 +110,10 @@ describe('tts', () => {
   test('configureUtterance ignores canceled/interrupted errors', () => {
     const errorSpy = spyOn(console, 'error').mockImplementation(() => {});
     const allWords = makeSpans(['hello']);
-    const utterance = configureUtterance({ allWords, rate: 1 }) as MockUtterance;
+    const utterance = configureUtterance({
+      allWords,
+      rate: 1,
+    }) as unknown as MockUtterance;
     utterance.emit('error', { error: 'canceled' });
     utterance.emit('error', { error: 'interrupted' });
     expect(errorSpy).not.toHaveBeenCalled();
@@ -107,7 +123,10 @@ describe('tts', () => {
   test('configureUtterance logs other speech errors', () => {
     const errorSpy = spyOn(console, 'error').mockImplementation(() => {});
     const allWords = makeSpans(['hello']);
-    const utterance = configureUtterance({ allWords, rate: 1 }) as MockUtterance;
+    const utterance = configureUtterance({
+      allWords,
+      rate: 1,
+    }) as unknown as MockUtterance;
     utterance.emit('error', { error: 'not-allowed' });
     expect(errorSpy).toHaveBeenCalled();
     errorSpy.mockRestore();
@@ -115,14 +134,22 @@ describe('tts', () => {
 
   test('applyVoice sets the matching voice and lang', () => {
     const utterance = makeUtt();
-    applyVoice(utterance as unknown as SpeechSynthesisUtterance, 'Samantha', 'en-US');
+    applyVoice(
+      utterance as unknown as SpeechSynthesisUtterance,
+      'Samantha',
+      'en-US',
+    );
     expect((utterance.voice as { name: string } | null)?.name).toBe('Samantha');
     expect(utterance.lang).toBe('en-US');
   });
 
   test('applyVoice sets voice to null when not found', () => {
     const utterance = makeUtt();
-    applyVoice(utterance as unknown as SpeechSynthesisUtterance, 'Unknown', 'en-US');
+    applyVoice(
+      utterance as unknown as SpeechSynthesisUtterance,
+      'Unknown',
+      'en-US',
+    );
     expect(utterance.voice).toBeNull();
     expect(utterance.lang).toBe('en-US');
   });
@@ -169,7 +196,9 @@ describe('tts', () => {
     env.speech.speaking = true;
     playTTS();
     expect(env.speech.speakCalls.length).toBe(0);
-    expect(getCurrentUtterance()).toBe(utterance);
+    expect(getCurrentUtterance()).toBe(
+      utterance as unknown as SpeechSynthesisUtterance,
+    );
   });
 
   test('pauseTTS pauses only when speaking', () => {

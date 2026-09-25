@@ -45,7 +45,9 @@ describe('text', () => {
     span.textContent = 'x';
     nav.appendChild(span);
     document.body.appendChild(nav);
-    expect(isTextNodeBlockedByAncestor(span.firstChild!, document.body)).toBe(true);
+    expect(isTextNodeBlockedByAncestor(span.firstChild!, document.body)).toBe(
+      true,
+    );
   });
 
   test('isTextNodeBlockedByAncestor stops at the container boundary', () => {
@@ -66,12 +68,16 @@ describe('text', () => {
     hidden.style.display = 'none';
     hidden.textContent = 'x';
     document.body.appendChild(hidden);
-    expect(isTextNodeBlockedByAncestor(hidden.firstChild!, document.body)).toBe(true);
+    expect(isTextNodeBlockedByAncestor(hidden.firstChild!, document.body)).toBe(
+      true,
+    );
 
     const btn = document.createElement('button');
     btn.textContent = 'click';
     document.body.appendChild(btn);
-    expect(isTextNodeBlockedByAncestor(btn.firstChild!, document.body)).toBe(true);
+    expect(isTextNodeBlockedByAncestor(btn.firstChild!, document.body)).toBe(
+      true,
+    );
   });
 
   test('isOnlyTextNodeWithPunctuation returns false when container is body', () => {
@@ -79,7 +85,9 @@ describe('text', () => {
     const p = document.createElement('p');
     p.textContent = '...';
     document.body.appendChild(p);
-    expect(isOnlyTextNodeWithPunctuation(p.firstChild!, document.body)).toBe(false);
+    expect(isOnlyTextNodeWithPunctuation(p.firstChild!, document.body)).toBe(
+      false,
+    );
   });
 
   test('isOnlyTextNodeWithPunctuation returns false for content-tag parent', () => {
@@ -143,7 +151,8 @@ describe('text', () => {
   test('collectTextNodes gathers accepted text nodes', () => {
     const { document } = env.window;
     const container = document.createElement('div');
-    container.innerHTML = '<p>first</p><p>second</p><button>btn</button><script>var a;</script>';
+    container.innerHTML =
+      '<p>first</p><p>second</p><button>btn</button><script>var a;</script>';
     document.body.appendChild(container);
     const nodes = collectTextNodes(container);
     const texts = nodes.map((n) => (n.nodeValue ?? '').trim());
